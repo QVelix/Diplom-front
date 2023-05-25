@@ -20,4 +20,11 @@ export class UserService {
   public user$:Observable<any> = this._userSubject.asObservable();
 
   constructor() { }
+
+  public getAuthStatus(){
+    if(this._userSubject.value!=null){
+      return true;
+    }
+    return false;
+  }
 }
