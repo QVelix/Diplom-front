@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from "../../services/user.service";
 
 declare interface RouteInfo {
     path: string;
@@ -29,14 +30,21 @@ export class SidebarComponent implements OnInit {
   public menuItems: any[] = [];
   public isCollapsed = true;
 
-  constructor(private router: Router) { }
+  private user: any;
+
+  constructor(private router: Router, private userService: UserService) {
+    userService.user$.subscribe(user=>{
+      this.user = user;
+    });
+    console.log(this.user);
+  }
 
   ngOnInit() {
     ROUTES.forEach(route=>{
-      if(this.authStatus!=true && route.path=='/user-profile'){
+      if(this.user.login.length==0 && route.path=='/user-profile'){
         return;
       }
-      if(this.authStatus!=false && (route.path=='/login'||route.path=='/register')){
+      if(this.user.login.length>0 && (route.path=='/login'||route.path=='/register')){
         return;
       }
       this.menuItems.push(route);
