@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   public user: any;
 
-  constructor(location: Location,  private element: ElementRef, private router: Router, private userService: UserService) {
+  constructor(location: Location,  private element: ElementRef, private router: Router, public userService: UserService) {
     this.location = location;
     userService.user$.subscribe(user=>{
       this.user = user;

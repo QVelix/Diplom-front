@@ -42,10 +42,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     ROUTES.forEach(route=>{
-      if(this.user.login.length==0 && route.path=='/user-profile'){
+      if(this.userService.getAuthStatus()!=true && route.path=='/user-profile'){
         return;
       }
-      if(this.user.login.length>0 && (route.path=='/login'||route.path=='/register')){
+      if(this.userService.getAuthStatus()!=false && (route.path=='/login'||route.path=='/register')){
         return;
       }
       this.menuItems.push(route);
