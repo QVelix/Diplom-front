@@ -24,13 +24,24 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
 
-  public menuItems: any[];
+  private authStatus:boolean = true;
+
+  public menuItems: any[] = [];
   public isCollapsed = true;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    ROUTES.forEach(route=>{
+      if(this.authStatus!=true && route.path=='/user-profile'){
+        return;
+      }
+      if(this.authStatus!=false && (route.path=='/login'||route.path=='/register')){
+        return;
+      }
+      this.menuItems.push(route);
+    });
+    // this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
    });
