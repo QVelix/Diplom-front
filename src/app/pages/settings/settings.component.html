@@ -21,28 +21,28 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let content of DataTableContent">
+            <tr *ngFor="let tableContent of DataTableContent">
               <th scope="row">
                 <div class="media align-items-center">
 <!--                  <a href="javascript:void(0)" class="avatar rounded-circle mr-3">-->
 <!--                    <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">-->
 <!--                  </a>-->
                   <div class="media-body">
-                    <span class="mb-0 text-sm">{{content[0]}}</span>
+                    <span class="mb-0 text-sm">{{tableContent[0]}}</span>
                   </div>
                 </div>
               </th>
               <td>
-                {{content[1]}}
+                {{tableContent[1]}}
               </td>
               <td>
-                {{content[2]}}
+                {{tableContent[2]}}
               </td>
               <td>
-                {{content[3]}}
+                {{tableContent[3]}}
               </td>
               <td>
-                {{content[4]}}
+                {{tableContent[4]}}
               </td>
               <td class="text-right">
                 <div ngbDropdown placement="bottom-right">
@@ -50,8 +50,8 @@
                     <i class="fas fa-ellipsis-v"></i>
                   </a>
                   <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                    <a class="dropdown-item" href="javascript:void(0)">Изменить</a>
-                    <a class="dropdown-item" (click)="delete(content)">Удалить</a>
+                    <a class="dropdown-item btn btn-lg btn-outline-primary" (click)="edit()">Изменить</a>
+                    <a class="dropdown-item" (click)="delete(tableContent)">Удалить</a>
                   </div>
                 </div>
               </td>
