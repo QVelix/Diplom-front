@@ -19,4 +19,18 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  getAge(){
+    const birthdate = new Date(this.user.birthdate);
+    const nowDate = new Date();
+    let age = nowDate.getFullYear() - birthdate.getFullYear();
+    if(nowDate.getMonth()<birthdate.getMonth()){
+      age-=1;
+    }else if(nowDate.getMonth()==birthdate.getMonth()){
+      if(nowDate.getDate()<birthdate.getDate()){
+        age-=1;
+      }
+    }
+    return age;
+  }
+
 }
