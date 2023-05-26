@@ -12,8 +12,10 @@ export class UserService {
     firstname: 'Богачёв',
     secondname: 'Максим',
     lastname: 'Владиславович',
-    phone: '89397052404',
-    mail: 'max.bogachew@yandex.ru'
+    work_phone: '89397052404',
+    personal_phone: '89023678122',
+    mail: 'max.bogachew@yandex.ru',
+    birthdate: '12/19/2002'
   };
   private _userSubject:BehaviorSubject<any> = new BehaviorSubject<any>(this.defaultUser);
 
