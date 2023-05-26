@@ -1,4 +1,4 @@
-<div class="container mt--8 pb-5">
+<div class="container mt--8 pb-5" *ngIf="router.url != '/register'">
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
@@ -6,13 +6,13 @@
           <div class="text-muted text-center mt-2 mb-3"><span>Войти</span></div>
         </div>
         <div class="card-body px-lg-5 py-lg-5">
-          <form role="form">
+          <form role="form" [formGroup]="loginGroup">
             <div class="form-group mb-3">
               <div class="input-group input-group-alternative">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                 </div>
-                <input class="form-control" placeholder="Логин" type="login">
+                <input formControlName="login" class="form-control" placeholder="Логин" type="login">
               </div>
             </div>
             <div class="form-group">
@@ -20,11 +20,12 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                 </div>
-                <input class="form-control" placeholder="Пароль" type="password">
+                <input formControlName="password" class="form-control" placeholder="Пароль" type="password">
               </div>
             </div>
             <div class="text-center">
-              <button type="button" class="btn btn-primary my-4">Войти</button>
+              <button *ngIf="checkValid()==true" type="button" class="btn btn-primary my-4">Войти</button>
+              <button *ngIf="checkValid()==false" disabled type="button" class="btn btn-primary my-4">Войти</button>
             </div>
           </form>
         </div>
@@ -37,3 +38,90 @@
     </div>
   </div>
 </div>
+<div class="container mt--8 pb-5" *ngIf="router.url == '/register'">
+  <!-- Table -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-header bg-transparent pb-5">
+          <div class="text-muted text-center mt-2 mb-4"><span>Зарегистрироваться</span></div>
+<!--          <div class="text-center">-->
+<!--            <a href="javascript:void(0)" class="btn btn-neutral btn-icon mr-4">-->
+<!--              <span class="btn-inner&#45;&#45;icon"><img src="assets/img/icons/common/github.svg"></span>-->
+<!--              <span class="btn-inner&#45;&#45;text">Github</span>-->
+<!--            </a>-->
+<!--            <a href="javascript:void(0)" class="btn btn-neutral btn-icon">-->
+<!--              <span class="btn-inner&#45;&#45;icon"><img src="assets/img/icons/common/google.svg"></span>-->
+<!--              <span class="btn-inner&#45;&#45;text">Google</span>-->
+<!--            </a>-->
+<!--          </div>-->
+        </div>
+        <div class="card-body px-lg-5 py-lg-5">
+<!--          <div class="text-center text-muted mb-4">-->
+<!--            <small>Or sign up with credentials</small>-->
+<!--          </div>-->
+          <form role="form" [formGroup]="registerGroup">
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input formControlName="firstname" class="form-control" placeholder="Фамилия" type="text">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input formControlName="secondname" class="form-control" placeholder="Имя" type="text">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input formControlName="lastname" class="form-control" placeholder="Отчество" type="text">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                </div>
+                <input formControlName="login" class="form-control" placeholder="Логин" type="login">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                </div>
+                <input formControlName="password" class="form-control" placeholder="Пароль" type="password">
+              </div>
+            </div>
+            <div class="text-muted font-italic" *ngIf="registerGroup.get('password').value.length>0">
+              <small>Сложность пароля: <span class="text-success font-weight-700">{{this.checkPassword()}}</span></small>
+            </div>
+<!--            <div class="row my-4">-->
+<!--              <div class="col-12">-->
+<!--                <div class="custom-control custom-control-alternative custom-checkbox">-->
+<!--                  <input class="custom-control-input" id="customCheckRegister" type="checkbox">-->
+<!--                  <label class="custom-control-label" for="customCheckRegister">-->
+<!--                    <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>-->
+<!--                  </label>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+            <div class="text-center">
+              <button *ngIf="checkValid()==true" type="button" class="btn btn-primary mt-4">Создать аккаунт</button>
+              <button *ngIf="checkValid()==false" disabled type="button" class="btn btn-primary mt-4">Создать аккаунт</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
