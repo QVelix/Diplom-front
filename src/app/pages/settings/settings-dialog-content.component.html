@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{user.login}}</h4>
+  <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <i class="ni ni-fat-remove"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="userSettingsGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="login" type="text" placeholder="Логин" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="password" type="password" placeholder="Пароль" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="firstname" type="text" placeholder="Фамилия" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="secondname" type="text" placeholder="Имя" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="lastname" type="text" placeholder="Отчество" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="birthdate" placeholder="MM.DD.YYYY" class="form-control" type="text">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="workPhone" type="text" placeholder="Рабочий телефон" class="form-control" [value]="user.work_phone">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="personalPhone" type="text" placeholder="Личный телефон" class="form-control" [value]="user.personal_phone">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="mail" type="text" placeholder="Почта" class="form-control" [value]="user.mail">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(save())">Save</button>
+</div>
