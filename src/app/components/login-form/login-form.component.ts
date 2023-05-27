@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent implements OnInit {
+  error = null;
   registerGroup: FormGroup = new FormGroup<any>({
     password: new FormControl(''),
     login: new FormControl(''),
@@ -79,6 +80,15 @@ export class LoginFormComponent implements OnInit {
         return true;
       }
       return false;
+    }
+  }
+
+  auth(){
+    const user = this.userService.auth(this.loginGroup.get('login').value, this.loginGroup.get('password').value);
+    if(user==false){
+      this.error = 'Неправильный логин или пароль';
+    }else{
+      this.router.navigate(['/dashboard']);
     }
   }
 
