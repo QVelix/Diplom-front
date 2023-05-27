@@ -13,7 +13,10 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsComponent } from "../../pages/settings/settings.component";
-import {AuthLayoutModule} from "../auth-layout/auth-layout.module";
+import { AuthLayoutModule } from "../auth-layout/auth-layout.module";
+import { CompaniesComponent } from "../../pages/companies/companies.component";
+import { ContactsComponent } from "../../pages/contacts/contacts.component";
+import { DealsComponent } from "../../pages/deals/deals.component";
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -32,7 +35,10 @@ import {AuthLayoutModule} from "../auth-layout/auth-layout.module";
     TablesComponent,
     IconsComponent,
     MapsComponent,
-    SettingsComponent
+    SettingsComponent,
+    CompaniesComponent,
+    ContactsComponent,
+    DealsComponent
   ]
 })
 
