@@ -7,6 +7,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 export class UserService {
 
   private defaultUser = {
+    id: 3,
     login: 'admin',
     password: '12345678',
     firstname: 'Богачёв',
@@ -28,5 +29,17 @@ export class UserService {
       return true;
     }
     return false;
+  }
+
+  public getUserType(){
+    const random = Math.floor(Math.random()*2);
+    switch (random) {
+      case 0:
+        return {'name': 'admin', 'id': 0};
+        break;
+      case 1:
+        return {'name': 'manager', 'id': 1};
+        break;
+    }
   }
 }
