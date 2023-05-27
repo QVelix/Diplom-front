@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{contact.First_name}} {{contact.Second_name}} {{contact.Last_name}}</h4>
+  <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <i class="ni ni-fat-remove"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="contactGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="First_name" type="text" placeholder="Фамилия" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Second_name" type="text" placeholder="Имя" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Last_name" type="text" placeholder="Отчество" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Work_phone" type="text" placeholder="Рабочий телефон" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Personal_phone" type="text" placeholder="Личный телефон" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select formControlName="Responsible" class="form-control" aria-label="Default select example">
+            <option *ngFor="let user of users" [value]="user.id">{{user.firstname}} {{user.secondname}} {{user.lastname}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(save())">Save</button>
+</div>
