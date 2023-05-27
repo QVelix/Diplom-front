@@ -47,6 +47,7 @@ export class UserService {
   private _userSubject:BehaviorSubject<any> = new BehaviorSubject<any>(this.defaultUsers[0]);
   private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<any>(this.defaultUsers);
   public user$:Observable<any> = this._userSubject.asObservable();
+  public users$:Observable<any> = this._usersSubject.asObservable();
 
   constructor() { }
 
