@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{company.Short_name}}</h4>
+  <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <i class="ni ni-fat-remove"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="companiesGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Short_name" type="text" placeholder="Короткое название" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Full_name" type="password" placeholder="Полное название" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Phone" type="text" placeholder="Телефон" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Email" type="text" placeholder="Почта" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <select formControlName="Type" class="form-control" aria-label="Default select example">
+            <option *ngFor="let type of companiesType" [value]="type.id">{{type.Name}}</option>
+          </select>
+<!--          <input  type="text" placeholder="Тип компании" class="form-control" >-->
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Responsible" placeholder="Ответственный" class="form-control" type="text">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(save())">Сохранить</button>
+</div>

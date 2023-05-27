@@ -1,1 +1,68 @@
-<p>companies works!</p>
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+  </div>
+</div>
+<!-- Page content -->
+<app-login-form *ngIf="userService.getAuthStatus()!=true"></app-login-form>
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0">Список компаний</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+            <tr>
+              <th scope="col" *ngFor="let header of DataTableHeaders">{{header}}</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let tableContent of DataTableContent">
+              <th scope="row">
+                <div class="media align-items-center">
+                  <!--                  <a href="javascript:void(0)" class="avatar rounded-circle mr-3">-->
+                  <!--                    <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">-->
+                  <!--                  </a>-->
+                  <div class="media-body">
+                    <span class="mb-0 text-sm">{{tableContent.id}}</span>
+                  </div>
+                </div>
+              </th>
+              <td>
+                {{tableContent.Short_name}}
+              </td>
+              <td>
+                {{tableContent.Type}}
+              </td>
+              <td>
+                {{tableContent.Phone}}
+              </td>
+              <td>
+                {{tableContent.Email}}
+              </td>
+              <td>
+                {{tableContent.Responsible}}
+              </td>
+              <td class="text-right">
+                <div ngbDropdown placement="bottom-right">
+                  <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                    <i class="fas fa-ellipsis-v"></i>
+                  </a>
+                  <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                    <a class="dropdown-item btn btn-lg btn-outline-primary" (click)="edit(tableContent)">Изменить</a>
+                    <a class="dropdown-item" (click)="delete(tableContent)">Удалить</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
