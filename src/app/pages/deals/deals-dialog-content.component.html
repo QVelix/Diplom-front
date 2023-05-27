@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{deal.Name}} {{deal.Number}}</h4>
+  <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <i class="ni ni-fat-remove"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="dealsGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Name" type="text" placeholder="Название" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Number" type="text" placeholder="Номер" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Creation_date" type="text" placeholder="Дата создания" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Close_date" type="text" placeholder="Дата завершения" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="Price" type="text" placeholder="Сумма сделки" class="form-control" >
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select formControlName="Responsible" class="form-control" aria-label="Default select example">
+            <option *ngFor="let user of users" [value]="user.id">{{user.firstname}} {{user.secondname}} {{user.lastname}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(save())">Save</button>
+</div>
