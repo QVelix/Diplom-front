@@ -10,7 +10,6 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
-  closeResult:any = '';
   DataTableHeaders: Array<string> = ["ID", "Логин", "ФИО", "Дата рождения", "Почта"];
   DataTableContent: Array<any> = [
     {
@@ -49,7 +48,7 @@ export class SettingsComponent implements OnInit {
   }
 
   delete(user){
-    let userPosition = this.DataTableContent.findIndex(content=>content[0]==user[0]);
+    let userPosition = this.DataTableContent.findIndex(content=>content.id==user.id);
     this.DataTableContent.splice(userPosition, 1);
   }
 
@@ -59,20 +58,12 @@ export class SettingsComponent implements OnInit {
 
     setTimeout(()=>{
       const element = document.getElementsByClassName('modal-backdrop fade show');
-      console.log(element);
       element.item(0).remove();
     }, 100);
 
     modalRef.result.then(result=>{
-      // console.log(result);
-      let users = this.DataTableContent;
-      let i = 0;
-      users.forEach(user=>{
-        if(user.id==result.id){
-          this.DataTableContent[i] = result;
-        }
-        i+=1;
-      });
+      let userPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
+      this.DataTableContent[userPosition] = result;
     });
   }
 
