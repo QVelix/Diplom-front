@@ -39,7 +39,9 @@
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <input formControlName="Responsible" placeholder="Ответственный" class="form-control" type="text">
+          <select formControlName="Responsible" class="form-control" aria-label="Default select example">
+            <option *ngFor="let user of users" [value]="user.id">{{user.firstname}} {{user.secondname}} {{user.lastname}}</option>
+          </select>
         </div>
       </div>
     </div>

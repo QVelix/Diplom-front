@@ -20,7 +20,7 @@ export class CompaniesComponent implements OnInit {
       Phone: 'Богачёв',
       Email: 'Максим',
       Type: 'ООО',
-      Responsible: '0',
+      ResponsibleId: 0,
     },
     {
       id: 1,
@@ -29,7 +29,7 @@ export class CompaniesComponent implements OnInit {
       Phone: '421412',
       Email: '52151',
       Type: 'ИП',
-      Responsible: '1',
+      ResponsibleId: 1,
     }
   ];
 
@@ -59,6 +59,15 @@ export class CompaniesComponent implements OnInit {
     });
   }
 
+  getResponsible(company){
+    let responsibleUser = null;
+    this.userService.users$.subscribe(users=>{
+      responsibleUser = users[users.findIndex(user=>user.id==company.ResponsibleId)];
+    });
+    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    return FIO;
+  }
+
 }
 
 
@@ -84,7 +93,9 @@ export class CompaniesDialogContentComponent {
 
   companiesType=[{id:0, Name: 'ООО'}, {id:1, Name: 'ИП'}, {id:2, Name: 'Физ. лицо'}];
 
-  constructor(public activeModal: NgbActiveModal) {
+  users;
+
+  constructor(public activeModal: NgbActiveModal, private userService: UserService) {
     setTimeout(()=>{
       this.companiesGroup.get('Short_name').setValue(this.company.Short_name);
       this.companiesGroup.get('Full_name').setValue(this.company.Full_name);
@@ -94,8 +105,11 @@ export class CompaniesDialogContentComponent {
         if(this.company.Type==type.Name) this.companiesGroup.get('Type').setValue(type.id);
       })
       // this.companiesGroup.get('Type').setValue(this.company.Type);
-      this.companiesGroup.get('Responsible').setValue(this.company.Responsible);
+      this.companiesGroup.get('Responsible').setValue(this.company.ResponsibleId);
     }, 100);
+    this.userService.users$.subscribe(users=>{
+      this.users = users;
+    });
   }
 
   save(){
@@ -106,7 +120,7 @@ export class CompaniesDialogContentComponent {
       Phone: this.companiesGroup.get('Phone').value,
       Email: this.companiesGroup.get('Email').value,
       Type: this.getTypeName(this.companiesGroup.get('Type').value),
-      Responsible: this.companiesGroup.get('Responsible').value,
+      ResponsibleId: this.companiesGroup.get('Responsible').value,
     };
     return company;
   }
@@ -119,5 +133,14 @@ export class CompaniesDialogContentComponent {
       }
     });
     return typeName;
+  }
+
+  getResponsible(id){
+    let responsibleUser = null;
+    this.userService.users$.subscribe(users=>{
+      responsibleUser = users[users.findIndex(user=>user.id==id)];
+    });
+    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    return FIO;
   }
 }
