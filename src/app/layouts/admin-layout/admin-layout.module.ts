@@ -17,6 +17,7 @@ import { AuthLayoutModule } from "../auth-layout/auth-layout.module";
 import { CompaniesComponent } from "../../pages/companies/companies.component";
 import { ContactsComponent } from "../../pages/contacts/contacts.component";
 import { DealsComponent } from "../../pages/deals/deals.component";
+import { ProductsComponent } from "../../pages/products/products.component";
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { DealsComponent } from "../../pages/deals/deals.component";
     SettingsComponent,
     CompaniesComponent,
     ContactsComponent,
-    DealsComponent
+    DealsComponent,
+    ProductsComponent
   ]
 })
 
