@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{product.name}}</h4>
+  <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <i class="ni ni-fat-remove"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="productsGroup">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="name" type="text" placeholder="Название" class="form-control" >
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <input formControlName="price" type="text" placeholder="Цена" class="form-control" >
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(save())">Save</button>
+</div>
