@@ -1,9 +1,11 @@
 {
   "name": "argon-dashboard-angular",
   "version": "1.5.0",
+  "main": "app.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start2": "ng build --base-href ./ && electron .",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -30,12 +32,13 @@
     "bootstrap": "4.6.1",
     "chart.js": "2.9.4",
     "clipboard": "2.0.10",
+    "electron": "^24.4.0",
     "ngx-clipboard": "15.0.1",
     "ngx-toastr": "14.2.2",
     "nouislider": "15.5.1",
     "rxjs": "~7.5.0",
-    "zone.js": "~0.11.4",
-    "web-animations-js": "2.3.2"
+    "web-animations-js": "2.3.2",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.7",
