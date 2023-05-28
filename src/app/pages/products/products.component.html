@@ -1,1 +1,35 @@
-<p>products works!</p>
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-3 mb-5 mb-xl-2" *ngFor="let product of products" >
+      <div style="width: 18rem;" >
+        <div class="card card-stats mb-4 mb-lg-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">{{product.name}}</h5>
+                <span class="h2 font-weight-bold mb-0">{{product.price}} ₽</span>
+              </div>
+              <div class="col-auto">
+                <div (click)="delete(product)" class="icon icon-shape bg-danger text-white rounded-circle shadow" style="width: 30px; height: 30px; cursor: pointer;">
+                  <i class="ni ni-fat-remove"></i>
+                </div>
+              </div>
+            </div>
+            <p class="mt-3 mb-0 text-muted text-sm">
+<!--              <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>-->
+              <a class="btn btn-default btn-sm active" role="button" aria-pressed="true">Редактировать</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
