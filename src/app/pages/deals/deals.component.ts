@@ -14,23 +14,23 @@ export class DealsComponent implements OnInit {
   DataTableContent: Array<any> = [
     {
       id: 0,
-      Name: 'admin2',
-      Number: 53232,
+      Name: 'Покупка лицензии Битрикс24',
+      Number: 10000,
       Price: 'Богачёв',
-      Creation_date: 'Максим',
-      Close_date: 'Владиславович',
+      Creation_date: '03/20/2023',
+      Close_date: '04/20/2023',
       ResponsibleId: 0,
       Company: 0,
       Contact: 0
     },
     {
       id: 1,
-      Name: 'admin2',
-      Number: '12345678',
-      Price: 10000,
-      Creation_date: 'Максим',
-      Close_date: 'Владиславович',
-      ResponsibleId: 2,
+      Name: 'Разработка ПО для 1СБУС',
+      Number: 'С29532',
+      Price: 349000,
+      Creation_date: '05/20/2023',
+      Close_date: '',
+      ResponsibleId: 1,
       Company: 0,
       Contact: 0
     }

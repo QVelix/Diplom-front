@@ -19,13 +19,19 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Функция расчёта возраста
+   * @return number age
+   */
   getAge(){
     const birthdate = new Date(this.user.birthdate);
     const nowDate = new Date();
+    //Расчитываем возраст в годах: из текущего года вычитаем год рождения
     let age = nowDate.getFullYear() - birthdate.getFullYear();
+    //Если текущий месяц меньше месяца рождения - вычитаем 1 год
     if(nowDate.getMonth()<birthdate.getMonth()){
       age-=1;
-    }else if(nowDate.getMonth()==birthdate.getMonth()){
+    }else if(nowDate.getMonth()==birthdate.getMonth()){ //Если месяц текущий и месяц рождения одинаков проверяем день рождения
       if(nowDate.getDate()<birthdate.getDate()){
         age-=1;
       }

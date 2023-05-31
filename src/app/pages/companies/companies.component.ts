@@ -15,19 +15,19 @@ export class CompaniesComponent implements OnInit {
   DataTableContent: Array<any> = [
     {
       id: 0,
-      Short_name: 'pochtiadmin',
-      Full_name: '12345678',
-      Phone: 'Богачёв',
-      Email: 'Максим',
+      Short_name: 'ООО Рога и Копыта',
+      Full_name: 'Общество с ограниченной ответственностью Соло Груп',
+      Phone: '8939705204',
+      Email: 'roga@kopita.ru',
       Type: 'ООО',
       ResponsibleId: 0,
     },
     {
       id: 1,
-      Short_name: '2324124',
-      Full_name: '12345678',
-      Phone: '421412',
-      Email: '52151',
+      Short_name: 'ИП Соловьев',
+      Full_name: 'Индивидуальный предприниматель Соловьев Алексей Сергеевич',
+      Phone: '8939705204',
+      Email: 'sas@solo-it.ru',
       Type: 'ИП',
       ResponsibleId: 1,
     }
