@@ -8,8 +8,8 @@ import {User} from "../models/User";
 })
 export class UserService {
 
-  private _userSubject:BehaviorSubject<any> = new BehaviorSubject<Array<User>>(null);
-  private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<User>(null);
+  private _userSubject:BehaviorSubject<any> = new BehaviorSubject<User>(null);
+  private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<Array<User>>(null);
   public user$:Observable<any> = this._userSubject.asObservable();
   public users$:Observable<any> = this._usersSubject.asObservable();
 
