@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from "../../services/user.service";
+import {beforeMain} from "@popperjs/core";
 
 declare interface RouteInfo {
     path: string;
@@ -41,22 +42,29 @@ export class SidebarComponent implements OnInit {
     userService.user$.subscribe(user=>{
       this.user = user;
     });
-    console.log(this.user);
   }
 
   ngOnInit() {
-    ROUTES.forEach(route=>{
-      if(this.userService.getAuthStatus()!=true && route.path=='/user-profile'){
-        return;
-      }
-      if(this.userService.getAuthStatus()!=false && (route.path=='/login'||route.path=='/register')){
-        return;
-      }
-      this.menuItems.push(route);
-    });
-    // this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
    });
   }
+
+  public getShowed(menuItem) {
+    if(this.userService.getAuthStatus()==true){
+      if(menuItem.path=="/register"||menuItem.path=="/login"){
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      switch (menuItem.path){
+        case '/login': return true; break;
+        case '/register': return true; break;
+        default: return false; break;
+      }
+    }
+  }
+
 }
