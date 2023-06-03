@@ -6,9 +6,10 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
-        <h1 class="display-2 text-white">Привет {{user.secondname}}</h1>
+        <h1 class="display-2 text-white">Привет {{user.secondName}}</h1>
         <p class="text-white mt-0 mb-5">Это страница вашего профиля. Здесь вы можете настроить свои данные и посмотреть список задач, сделок, контаков и компаний, к которым приклеплены</p>
-        <a (click)="edit=true" class="btn btn-info">Редактировать профиль</a>
+        <a *ngIf="edit==false" (click)="edit=true" class="btn btn-info">Редактировать профиль</a>
+        <a *ngIf="edit==true" (click)="edit=false" class="btn btn-info">Сохранить</a>
       </div>
     </div>
   </div>
@@ -53,7 +54,7 @@
           </div>
           <div class="text-center">
             <h3>
-              {{user.firstname}} {{user.secondname}}<span class="font-weight-light">, {{getAge()}}</span>
+              {{user.firstName}} {{user.secondName}}<span class="font-weight-light">, {{getAge()}}</span>
             </h3>
 <!--            <div class="h5 font-weight-300">-->
 <!--              <i class="ni location_pin mr-2"></i>Bucharest, Romania-->
@@ -78,8 +79,11 @@
             <div class="col-8">
               <h3 class="mb-0">Мой профиль</h3>
             </div>
-            <div class="col-4 text-right">
+            <div class="col-4 text-right" *ngIf="edit==false">
               <a (click)="edit=true" class="btn btn-sm btn-primary">Настройки</a>
+            </div>
+            <div class="col-4 text-right" *ngIf="edit==true">
+              <a (click)="edit=false" class="btn btn-sm btn-primary">Сохранить</a>
             </div>
           </div>
         </div>
@@ -105,19 +109,19 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-first-name">Фамилия</label>
-                    <input [disabled]="!edit" type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="Фамилия" value="{{user.firstname}}">
+                    <input [disabled]="!edit" type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="Фамилия" value="{{user.firstName}}">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-second-name">Имя</label>
-                    <input [disabled]="!edit" type="text" id="input-second-name" class="form-control form-control-alternative" placeholder="Имя" value="{{user.secondname}}">
+                    <input [disabled]="!edit" type="text" id="input-second-name" class="form-control form-control-alternative" placeholder="Имя" value="{{user.secondName}}">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-first-name">Отчество</label>
-                    <input [disabled]="!edit" type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Отчество" value="{{user.lastname}}">
+                    <input [disabled]="!edit" type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Отчество" value="{{user.lastName}}">
                   </div>
                 </div>
               </div>
@@ -130,7 +134,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label class="form-control-label" for="input-email">Email</label>
-                    <input [disabled]="!edit" type="email" id="input-email" class="form-control form-control-alternative" placeholder="почта" value="{{user.mail}}">
+                    <input [disabled]="!edit" type="email" id="input-email" class="form-control form-control-alternative" placeholder="почта" value="{{user.Email}}">
                   </div>
                 </div>
               </div>
@@ -138,7 +142,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label class="form-control-label" for="input-email">Телефон</label>
-                    <input [disabled]="!edit" type="phone" id="input-phone" class="form-control form-control-alternative" placeholder="+7xxxxxxxxxx" value="{{user.personal_phone}}">
+                    <input [disabled]="!edit" type="phone" id="input-phone" class="form-control form-control-alternative" placeholder="+7xxxxxxxxxx" value="{{user.personalPhone}}">
                   </div>
                 </div>
               </div>

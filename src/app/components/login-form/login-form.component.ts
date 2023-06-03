@@ -84,7 +84,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   auth(){
-    const user = this.userService.auth(this.loginGroup.get('login').value, this.loginGroup.get('password').value);
+    let user = this.userService.auth(this.loginGroup.get('login').value, this.loginGroup.get('password').value);
     if(user==false){
       this.error = 'Неправильный логин или пароль';
     }else{

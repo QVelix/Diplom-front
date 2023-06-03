@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { map } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SendlerService {
-  private url = 'localhost:5054';
+  private url = 'https://hleb-development.space';
+  private headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
 
   public get(url:string, value:any=null){
+    this.headers.set('Accept', 'application/json');
+    this.headers.set('Content-Type', 'application/json');
+    this.headers.set('Access-Control-Allow-Origin', '*');
     if(value==null){
-      return this.http.get(this.url+url).pipe(map(response=>{return response}));
+      return this.http.get(this.url+url, {headers:this.headers})
+        .pipe(map(response=>{return response}));
     }else{
       return this.http.get(this.url+url, value).pipe(map(response=>{return response}));
     }

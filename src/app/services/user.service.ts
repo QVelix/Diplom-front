@@ -7,23 +7,24 @@ import {User} from "../models/User";
   providedIn: 'root'
 })
 export class UserService {
+  private _defaultUsers:Array<User> = [{id:null,login:null,password:null,firstName:null,secondName:null,birthDate:null,userTypesId:null}]
 
-  private _userSubject:BehaviorSubject<any> = new BehaviorSubject<User>(null);
-  private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<Array<User>>(null);
+  private _userSubject:BehaviorSubject<any> = new BehaviorSubject<User>(this._defaultUsers[0]);
+  private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<Array<User>>(this._defaultUsers);
   public user$:Observable<any> = this._userSubject.asObservable();
   public users$:Observable<any> = this._usersSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
-    sendlerService.get('/api/UsersController').subscribe((users:Array<User>)=>{
+    sendlerService.get('/api/User').subscribe((users:Array<User>)=>{
       users.forEach(user=>{
-        this._usersSubject.value.next(user);
+        this._usersSubject.next(user);
       })
     });
   }
 
 
   public getAuthStatus():boolean{
-    if(this._userSubject.value!=null){
+    if(this._userSubject.value.login!=null){
       return true;
     }
     return false;
@@ -31,9 +32,9 @@ export class UserService {
 
   public getUserType(){
     let findedType = null;
-    this.sendlerService.get('/api/UserTypeContoller').subscribe((types:Array<{ID:number, Name:string}>)=>{
+    this.sendlerService.get('/api/UserType').subscribe((types:Array<{id:number, name:string}>)=>{
       types.forEach(type=>{
-        if(this._userSubject.value.ID == type.ID){
+        if(this._userSubject.value.id == type.id){
           findedType = type;
         }
       })
@@ -43,8 +44,8 @@ export class UserService {
 
   public searchUser(search:string){
     let findedUser;
-    this._usersSubject.value.forEach((user:User)=>{
-      if(user.Login.includes(search)||user.First_name.includes(search)||user.Second_name.includes(search)||(user.First_name+" "+user.Second_name).includes(search)){
+    this._usersSubject.forEach((user:User)=>{
+      if(user.login.includes(search)||user.firstName.includes(search)||user.secondName.includes(search)||(user.firstName+" "+user.secondName).includes(search)){
         findedUser = user;
       }
     });
@@ -52,12 +53,12 @@ export class UserService {
   }
 
   public addUser(user){
-    this.sendlerService.put('/api/UsersController', user);
-    this._usersSubject.value.next(user);
+    this.sendlerService.put('/api/User', user);
+    this._usersSubject.next(user);
   }
 
   public deleteUser(userId){
-    this.sendlerService.delete('/api/UsersController', userId);
+    this.sendlerService.delete('/api/User', userId);
     this._usersSubject.value.splice(this._usersSubject.value.findIndex(user=>user.ID==userId),1);
   }
 
@@ -67,16 +68,20 @@ export class UserService {
 
   public auth(login:string, password:string):boolean{
     let authUser = false;
-    this._usersSubject.value.forEach(user=>{
-      if(user.Login==login && user.Password==password){
+    this._usersSubject.forEach(user=>{
+      console.log(user);
+      console.log(password);
+      if(user.login==login && user.password==password){
+
         this._userSubject.next(user);
         authUser = true;
       }
     });
+    console.log(authUser)
     return authUser;
   }
 
   public deAuth(){
-    this._userSubject.value.splice(0);
+    this._userSubject.value.setValue(this._defaultUsers[0]);
   }
 }
