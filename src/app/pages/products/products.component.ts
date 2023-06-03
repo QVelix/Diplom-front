@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {SettingsDialogContentComponent} from "../settings/settings.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { UserService } from "../../services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-products',
@@ -14,7 +15,11 @@ export class ProductsComponent implements OnInit {
     {id:6,name: 'БУС', price: 19000}, {id:7,name: 'Б24', price: 50000}, {id:8,name: 'Б24М', price: 9000},
     {id:9,name: 'БУС', price: 19000}, {id:10,name: 'Б24', price: 50000}, {id:11,name: 'Б24М', price: 9000}]
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private userService: UserService, private router:Router) {
+    if(userService.getAuthStatus()==false){
+      router.navigate(['/login']);
+    }
+  }
 
   ngOnInit(): void {
   }

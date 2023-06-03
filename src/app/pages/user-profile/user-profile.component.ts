@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-user-profile',
@@ -10,7 +11,10 @@ export class UserProfileComponent implements OnInit {
   public user;
   public edit:boolean = false;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
+    if(userService.getAuthStatus()==false){
+      router.navigate(['/login']);
+    }
     userService.user$.subscribe(user=>{
       this.user = user;
     });

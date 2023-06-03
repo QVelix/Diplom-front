@@ -3,6 +3,7 @@ import { UserService } from "../../services/user.service";
 import { ModalDismissReasons, NgbDatepickerModule, NgbDatepicker, NgbModal, NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {element} from "protractor";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -38,10 +39,16 @@ export class SettingsComponent implements OnInit {
     }
   ];
 
-  constructor(public userService: UserService, private modalService: NgbModal) {
+  constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
+    if(userService.getAuthStatus()==false){
+      router.navigate(['/login']);
+    }
     userService.user$.subscribe(user=>{
       this.DataTableContent.push(user);
-    })
+    });
+    if(userService.getAuthStatus()==false){
+
+    }
   }
 
   ngOnInit(): void {

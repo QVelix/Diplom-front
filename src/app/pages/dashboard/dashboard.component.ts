@@ -8,6 +8,8 @@ import {
   chartExample1,
   chartExample2
 } from "../../variables/charts";
+import { UserService } from "../../services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +23,12 @@ export class DashboardComponent implements OnInit {
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
+
+  constructor(private userService: UserService, private router: Router) {
+    if(userService.getAuthStatus()==false){
+      router.navigate(['/login']);
+    }
+  }
 
   ngOnInit() {
 

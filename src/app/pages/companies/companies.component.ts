@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UserService} from "../../services/user.service";
-import {SettingsDialogContentComponent} from "../settings/settings.component";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import { Component, Input, OnInit } from '@angular/core';
+import { UserService } from "../../services/user.service";
+import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { NgForOf } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-companies',
@@ -33,7 +33,10 @@ export class CompaniesComponent implements OnInit {
     }
   ];
 
-  constructor(public userService: UserService, private modalService: NgbModal) {
+  constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
+    if(userService.getAuthStatus()==false){
+      router.navigate(['/login']);
+    }
   }
 
   ngOnInit(): void {
