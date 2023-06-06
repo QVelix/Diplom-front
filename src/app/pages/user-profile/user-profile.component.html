@@ -9,7 +9,7 @@
         <h1 class="display-2 text-white">Привет {{user.secondName}}</h1>
         <p class="text-white mt-0 mb-5">Это страница вашего профиля. Здесь вы можете настроить свои данные и посмотреть список задач, сделок, контаков и компаний, к которым приклеплены</p>
         <a *ngIf="edit==false" (click)="edit=true" class="btn btn-info">Редактировать профиль</a>
-        <a *ngIf="edit==true" (click)="edit=false" class="btn btn-info">Сохранить</a>
+        <a *ngIf="edit==true" (click)="save()" class="btn btn-info">Сохранить</a>
       </div>
     </div>
   </div>
@@ -83,25 +83,25 @@
               <a (click)="edit=true" class="btn btn-sm btn-primary">Настройки</a>
             </div>
             <div class="col-4 text-right" *ngIf="edit==true">
-              <a (click)="edit=false" class="btn btn-sm btn-primary">Сохранить</a>
+              <a (click)="save()" class="btn btn-sm btn-primary">Сохранить</a>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="userGroup">
             <h6 class="heading-small text-muted mb-4">Пользовательская информация</h6>
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-username">Логин</label>
-                    <input [disabled]="!edit" type="text" id="input-username" class="form-control form-control-alternative" placeholder="Логин" value="{{user.login}}">
+                    <input formControlName="login" [disabled]="!edit" type="text" id="input-username" class="form-control form-control-alternative" placeholder="Логин" [value]="user.login">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-password">Пароль</label>
-                    <input [disabled]="!edit" type="password" id="input-password" class="form-control form-control-alternative" placeholder="Пароль" value="{{user.password}}">
+                    <input formControlName="password" [disabled]="!edit" type="password" id="input-password" class="form-control form-control-alternative" placeholder="Пароль" [value]="user.password">
                   </div>
                 </div>
               </div>
@@ -109,19 +109,19 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-first-name">Фамилия</label>
-                    <input [disabled]="!edit" type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="Фамилия" value="{{user.firstName}}">
+                    <input formControlName="firstname" [disabled]="!edit" type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="Фамилия" [value]="user.firstName">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label class="form-control-label" for="input-second-name">Имя</label>
-                    <input [disabled]="!edit" type="text" id="input-second-name" class="form-control form-control-alternative" placeholder="Имя" value="{{user.secondName}}">
+                    <input formControlName="secondname" [disabled]="!edit" type="text" id="input-second-name" class="form-control form-control-alternative" placeholder="Имя" [value]="user.secondName">
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-first-name">Отчество</label>
-                    <input [disabled]="!edit" type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Отчество" value="{{user.lastName}}">
+                    <label class="form-control-label" for="input-last-name">Отчество</label>
+                    <input formControlName="lastname" [disabled]="!edit" type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="Отчество" [value]="user.lastName">
                   </div>
                 </div>
               </div>
@@ -133,16 +133,16 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-email">Email</label>
-                    <input [disabled]="!edit" type="email" id="input-email" class="form-control form-control-alternative" placeholder="почта" value="{{user.Email}}">
+                    <label class="form-control-label" for="input-phone">Рабочий телефон</label>
+                    <input formControlName="workphone" [disabled]="!edit" type="phone" id="input-phone" class="form-control form-control-alternative" placeholder="7xxxxxxxxxx" [value]="user.workPhone">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-email">Телефон</label>
-                    <input [disabled]="!edit" type="phone" id="input-phone" class="form-control form-control-alternative" placeholder="+7xxxxxxxxxx" value="{{user.personalPhone}}">
+                    <label class="form-control-label" for="input-phone">Личный телефон</label>
+                    <input formControlName="personalphone" [disabled]="!edit" type="phone" id="input-phone" class="form-control form-control-alternative" placeholder="+7xxxxxxxxxx" [value]="user.personalPhone">
                   </div>
                 </div>
               </div>

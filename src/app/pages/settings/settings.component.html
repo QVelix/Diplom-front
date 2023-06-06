@@ -3,7 +3,6 @@
   </div>
 </div>
 <!-- Page content -->
-<app-login-form *ngIf="userService.getAuthStatus()!=true"></app-login-form>
 <div class="container-fluid mt--7">
   <!-- Table -->
   <div class="row">
@@ -36,13 +35,13 @@
                 {{tableContent.login}}
               </td>
               <td>
-                {{tableContent.firstname}} {{tableContent.secondname}} {{tableContent.lastname}}
+                {{tableContent.firstName}} {{tableContent.secondName}} {{tableContent.lastName}}
               </td>
               <td>
-                {{tableContent.birthdate}}
+                {{tableContent.birthDate}}
               </td>
               <td>
-                {{tableContent.mail}}
+                {{tableContent.workPhone}}
               </td>
               <td class="text-right">
                 <div ngbDropdown placement="bottom-right">

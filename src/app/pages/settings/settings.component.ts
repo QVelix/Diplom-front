@@ -4,6 +4,7 @@ import { ModalDismissReasons, NgbDatepickerModule, NgbDatepicker, NgbModal, NgbA
 import {element} from "protractor";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
+import {User} from "../../models/User";
 
 @Component({
   selector: 'app-settings',
@@ -11,44 +12,16 @@ import {Router} from "@angular/router";
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
-  DataTableHeaders: Array<string> = ["ID", "Логин", "ФИО", "Дата рождения", "Почта"];
-  DataTableContent: Array<any> = [
-    {
-      id: 0,
-      login: 'admin2',
-      password: '12345678',
-      firstname: 'Богачёв',
-      secondname: 'Максим',
-      lastname: 'Владиславович',
-      work_phone: '89397052404',
-      personal_phone: '89023678122',
-      mail: 'max.bogachew@yandex.ru',
-      birthdate: '12/19/2002'
-    },
-    {
-      id: 1,
-      login: 'pochtiadmin',
-      password: '12345678',
-      firstname: 'Богачёв',
-      secondname: 'Максим',
-      lastname: 'Владиславович',
-      work_phone: '89397052404',
-      personal_phone: '89023678122',
-      mail: 'max.bogachew@yandex.ru',
-      birthdate: '12/19/2002'
-    }
-  ];
+  DataTableHeaders: Array<string> = ["ID", "Логин", "ФИО", "Дата рождения", "Рабочий телефон"];
+  DataTableContent: Array<any>;
 
   constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
-    userService.user$.subscribe(user=>{
-      this.DataTableContent.push(user);
-    });
-    if(userService.getAuthStatus()==false){
-
-    }
+    userService.users$.subscribe(users=>{
+      this.DataTableContent = users;
+    })
   }
 
   ngOnInit(): void {
@@ -57,6 +30,7 @@ export class SettingsComponent implements OnInit {
   delete(user){
     let userPosition = this.DataTableContent.findIndex(content=>content.id==user.id);
     this.DataTableContent.splice(userPosition, 1);
+    this.userService.deleteUser(user.id);
   }
 
   edit(user){
@@ -71,6 +45,7 @@ export class SettingsComponent implements OnInit {
     modalRef.result.then(result=>{
       let userPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
       this.DataTableContent[userPosition] = result;
+      this.userService.changeUser(result);
     });
   }
 
@@ -95,20 +70,18 @@ export class SettingsDialogContentComponent {
     birthdate: new FormControl(''),
     workPhone: new FormControl(''),
     personalPhone: new FormControl(''),
-    mail: new FormControl('')
   });
 
   constructor(public activeModal: NgbActiveModal) {
     setTimeout(()=>{
       this.userSettingsGroup.get('login').setValue(this.user.login);
       this.userSettingsGroup.get('password').setValue(this.user.password);
-      this.userSettingsGroup.get('firstname').setValue(this.user.firstname);
-      this.userSettingsGroup.get('secondname').setValue(this.user.secondname);
-      this.userSettingsGroup.get('lastname').setValue(this.user.lastname);
-      this.userSettingsGroup.get('birthdate').setValue(this.user.birthdate);
-      this.userSettingsGroup.get('workPhone').setValue(this.user.work_phone);
-      this.userSettingsGroup.get('personalPhone').setValue(this.user.personal_phone);
-      this.userSettingsGroup.get('mail').setValue(this.user.mail);
+      this.userSettingsGroup.get('firstname').setValue(this.user.firstName);
+      this.userSettingsGroup.get('secondname').setValue(this.user.secondName);
+      this.userSettingsGroup.get('lastname').setValue(this.user.lastName);
+      this.userSettingsGroup.get('birthdate').setValue(this.user.birthDate);
+      this.userSettingsGroup.get('workPhone').setValue(this.user.workPhone);
+      this.userSettingsGroup.get('personalPhone').setValue(this.user.personalPhone);
     }, 100);
   }
 
@@ -117,13 +90,13 @@ export class SettingsDialogContentComponent {
       id: this.user.id,
       login: this.userSettingsGroup.get('login').value,
       password: this.userSettingsGroup.get('password').value,
-      firstname: this.userSettingsGroup.get('firstname').value,
-      secondname: this.userSettingsGroup.get('secondname').value,
-      lastname: this.userSettingsGroup.get('lastname').value,
-      birthdate: this.userSettingsGroup.get('birthdate').value,
-      work_phone: this.userSettingsGroup.get('workPhone').value,
-      personal_phone: this.userSettingsGroup.get('personalPhone').value,
-      mail: this.userSettingsGroup.get('mail').value
+      firstName: this.userSettingsGroup.get('firstname').value,
+      secondName: this.userSettingsGroup.get('secondname').value,
+      lastName: this.userSettingsGroup.get('lastname').value,
+      birthDate: this.userSettingsGroup.get('birthdate').value,
+      workPhone: this.userSettingsGroup.get('workPhone').value,
+      personalPhone: this.userSettingsGroup.get('personalPhone').value,
+      userTypesId: this.user.userTypesId
     };
     return user;
   }

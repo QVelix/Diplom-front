@@ -9,4 +9,5 @@ export interface User{
   workPhone?:string,
   personalPhone?:string,
   userTypesId:number,
+  userTypes?:{"id":number, "name":string}
 }

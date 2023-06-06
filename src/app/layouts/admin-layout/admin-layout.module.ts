@@ -28,7 +28,8 @@ import { ProductsComponent } from "../../pages/products/products.component";
         HttpClientModule,
         NgbModule,
         ClipboardModule,
-        AuthLayoutModule
+        AuthLayoutModule,
+        ReactiveFormsModule
     ],
   declarations: [
     DashboardComponent,
