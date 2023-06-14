@@ -15,14 +15,15 @@ export class UserService {
   public users$:Observable<any> = this._usersSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
-    this._usersSubject.value.slice(0,1);
-    sendlerService.get('/api/User').subscribe((users:Array<User>)=>{
-      users.forEach(user=>{
+    sendlerService.get('/api/User').subscribe((users: Array<User>) => {
+      this._usersSubject.value.splice(0,1);
+      users.forEach(user => {
         this._usersSubject.value.push(user);
-        console.log(user);
       })
+      console.log(this._usersSubject);
     });
   }
+
 
   public getAuthStatus():boolean{
     if(this._userSubject.value.login!=null){
@@ -58,7 +59,16 @@ export class UserService {
   }
 
   public addUser(user){
-    this.sendlerService.post('/api/User', user);
+    this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
+      types.forEach(type=>{
+        if(type.id == user.userTypesId){
+          user.userTypes = {"id":type.id,"name":type.name}
+        }
+      });
+      this.sendlerService.post('/api/User/', user).subscribe(result=>{
+        console.log(result);
+      });
+    });
     this._usersSubject.next(user);
   }
 
@@ -68,18 +78,16 @@ export class UserService {
   }
 
   public changeUser(user) {
+    console.log(this.findIndex(user.id));
     this._usersSubject.value[this.findIndex(user.id)] = user;
+    console.log(this._usersSubject.value);
     // this._usersSubject.value[this._usersSubject.value.findIndex(u => u.id == user.id)] = user;
     this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
       types.forEach(type=>{
-        console.log(type);
         if(type.id == user.userTypesId){
-          console.log('yes');
           user.userTypes = {"id":type.id,"name":type.name}
-
         }
       });
-      console.log(user);
       this.sendlerService.put('/api/User/'+user.id, user).subscribe(result=>{
         console.log(result);
       });
@@ -97,7 +105,7 @@ export class UserService {
         }
       })
     });
-    console.log(authUser)
+    console.log(authUser);
     return authUser;
   }
 
@@ -106,14 +114,17 @@ export class UserService {
   }
 
   private findIndex(id){
-    let index=0;
-    let findedIndex;
+    let index = 0;
+    let findedIndex = 0;
     this._usersSubject.forEach(user=>{
+      console.log(user.id+' '+id);
       if(user.id == id){
+
         findedIndex = index;
       }
       index+=1;
     });
+    console.log(findedIndex);
     return findedIndex;
   }
 }

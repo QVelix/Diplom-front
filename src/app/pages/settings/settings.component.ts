@@ -49,6 +49,21 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  addUser(){
+    let user: {userTypesId:6}
+    const modalRef = this.modalService.open(SettingsDialogContentComponent);
+    modalRef.componentInstance.user = user;
+
+    setTimeout(()=>{
+      const element = document.getElementsByClassName('modal-backdrop fade show');
+      element.item(0).remove();
+    }, 100);
+
+    modalRef.result.then(result=>{
+      this.DataTableContent.push(result);
+      this.userService.addUser(result);
+    })
+  }
 }
 
 @Component({
