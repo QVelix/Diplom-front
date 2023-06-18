@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
+import {ProductService} from "../../services/product.service";
 
 @Component({
   selector: 'app-products',
@@ -10,15 +11,16 @@ import { Router } from "@angular/router";
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  products: any[] = [{id:0,name: 'БУС', price: 19000}, {id:1,name: 'Б24', price: 50000}, {id:2,name: 'Б24М', price: 9000},
-    {id:3,name: 'БУС', price: 19000}, {id:4,name: 'Б24', price: 50000}, {id:5,name: 'Б24М', price: 9000},
-    {id:6,name: 'БУС', price: 19000}, {id:7,name: 'Б24', price: 50000}, {id:8,name: 'Б24М', price: 9000},
-    {id:9,name: 'БУС', price: 19000}, {id:10,name: 'Б24', price: 50000}, {id:11,name: 'Б24М', price: 9000}]
+  products: Array<{id:number, name:string, price:number}>;
 
-  constructor(private modalService: NgbModal, private userService: UserService, private router:Router) {
+  constructor(private modalService: NgbModal, private userService: UserService, private router:Router, private productService: ProductService) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
+    this.productService.getProducts().subscribe((prods:Array<{id:number, name:string, price:number}>)=>{
+      this.products = prods;
+    })
+    console.log(this.products);
   }
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class ProductsComponent implements OnInit {
 
   delete(product){
     this.products.splice(this.products.findIndex(prod=>prod.id==product.id),1);
+    this.productService.deleteProduct(product.id);
   }
 
   edit(product){
@@ -38,8 +41,25 @@ export class ProductsComponent implements OnInit {
     }, 100);
 
     modalRef.result.then(result=>{
-      let userPosition = this.products.findIndex(content=>content.id==result.id);
-      this.products[userPosition] = result;
+      let productPosition = this.products.findIndex(content=>content.id==result.id);
+      this.products[productPosition] = result;
+      this.productService.changeProduct(result);
+    });
+  }
+
+  addProduct(){
+    let product = {name:'', price:null};
+    const modalRef = this.modalService.open(ProductsDialogContentComponent);
+    modalRef.componentInstance.product = product;
+
+    setTimeout(()=>{
+      const element = document.getElementsByClassName('modal-backdrop fade show');
+      element.item(0).remove();
+    }, 100);
+
+    modalRef.result.then(result=>{
+      this.products.push(result);
+      this.productService.addProduct(result);
     });
   }
 
