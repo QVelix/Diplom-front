@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { NgForOf } from "@angular/common";
 import { Router } from "@angular/router";
+import {DealService} from "../../services/deal.service";
 
 @Component({
   selector: 'app-deals',
@@ -12,48 +13,35 @@ import { Router } from "@angular/router";
 })
 export class DealsComponent implements OnInit {
   DataTableHeaders: Array<string> = ["ID", "Название", "Номер", "Суммарная стоимость", "Дата создания", "Дата завершения", "Отвественный"];
-  DataTableContent: Array<any> = [
-    {
-      id: 0,
-      Name: 'Покупка лицензии Битрикс24',
-      Number: 10000,
-      Price: 'Богачёв',
-      Creation_date: '03/20/2023',
-      Close_date: '04/20/2023',
-      ResponsibleId: 0,
-      Company: 0,
-      Contact: 0
-    },
-    {
-      id: 1,
-      Name: 'Разработка ПО для 1СБУС',
-      Number: 'С29532',
-      Price: 349000,
-      Creation_date: '05/20/2023',
-      Close_date: '',
-      ResponsibleId: 1,
-      Company: 0,
-      Contact: 0
-    }
-  ];
+  DataTableContent: Array<any> = [];
+  users = [];
 
-  constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
+  constructor(public userService: UserService, private modalService: NgbModal, private router: Router, private dealService: DealService) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
+    this.dealService.deals$.subscribe(deals=>{
+      this.DataTableContent = deals;
+    });
+    this.userService.users$.subscribe(users=>{
+      users.forEach(user=>this.users.push(user));
+      console.log(this.users);
+    })
   }
 
   ngOnInit(): void {
   }
 
-  delete(contact){
-    let contactPosition = this.DataTableContent.findIndex(content=>content.id==contact.id);
+  delete(deal){
+    let contactPosition = this.DataTableContent.findIndex(content=>content.id==deal.id);
     this.DataTableContent.splice(contactPosition, 1);
+    this.dealService.deleteDeal(deal.id);
   }
 
   edit(deal){
     const modalRef = this.modalService.open(DealsDialogContentComponent);
     modalRef.componentInstance.deal = deal;
+    modalRef.componentInstance.users = this.users;
 
     setTimeout(()=>{
       const element = document.getElementsByClassName('modal-backdrop fade show');
@@ -63,6 +51,24 @@ export class DealsComponent implements OnInit {
     modalRef.result.then(result=>{
       let contactPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
       this.DataTableContent[contactPosition] = result;
+
+      this.dealService.changeDeal(result);
+    });
+  }
+
+  addDeal(){
+    const modalRef = this.modalService.open(DealsDialogContentComponent);
+    console.log(this.users);
+    modalRef.componentInstance.user = this.users;
+
+    setTimeout(()=>{
+      const element = document.getElementsByClassName('modal-backdrop fade show');
+      element.item(0).remove();
+    }, 100);
+
+    modalRef.result.then(result=>{
+      this.DataTableContent.push(result);
+      this.dealService.addDeal(result);
     });
   }
 
@@ -88,6 +94,7 @@ export class DealsComponent implements OnInit {
 })
 export class DealsDialogContentComponent {
   @Input() deal:any;
+  @Input() users:Array<any>;
   dealsGroup: FormGroup = new FormGroup<any>({
     Name: new FormControl(''),
     Number: new FormControl(''),
@@ -97,19 +104,17 @@ export class DealsDialogContentComponent {
     Responsible: new FormControl(''),
   });
 
-  users;
-
   constructor(public activeModal: NgbActiveModal, private userService: UserService) {
-    this.userService.users$.subscribe(users=>{
-      this.users = users;
-    });
     setTimeout(()=>{
-      this.dealsGroup.get('Name').setValue(this.deal.Name);
-      this.dealsGroup.get('Number').setValue(this.deal.Number);
-      this.dealsGroup.get('Price').setValue(this.deal.Price);
-      this.dealsGroup.get('Creation_date').setValue(this.deal.Creation_date);
-      this.dealsGroup.get('Close_date').setValue(this.deal.Close_date);
-      this.dealsGroup.get('Responsible').setValue(this.deal.ResponsibleId);
+      console.log(this.users);
+      if(this.deal!=undefined){
+        this.dealsGroup.get('Name').setValue(this.deal.Name);
+        this.dealsGroup.get('Number').setValue(this.deal.Number);
+        this.dealsGroup.get('Price').setValue(this.deal.Price);
+        this.dealsGroup.get('Creation_date').setValue(this.deal.Creation_date);
+        this.dealsGroup.get('Close_date').setValue(this.deal.Close_date);
+        this.dealsGroup.get('Responsible').setValue(this.deal.ResponsibleId);
+      }
     }, 100);
 
   }

@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{deal.Name}} {{deal.Number}}</h4>
+  <h4 class="modal-title" *ngIf="deal!=null||deal!=undefined">{{deal.Name}} {{deal.Number}}</h4>
+  <h4 class="modal-title" *ngIf="deal==null||deal==undefined">Создание сделки</h4>
   <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <i class="ni ni-fat-remove"></i>
   </button>
@@ -41,7 +42,7 @@
       <div class="col-md-6">
         <div class="form-group">
           <select formControlName="Responsible" class="form-control" aria-label="Default select example">
-            <option *ngFor="let user of users" [value]="user.id">{{user.firstname}} {{user.secondname}} {{user.lastname}}</option>
+            <option *ngFor="let user of users" [value]="user.id">{{user.firstName}} {{user.secondName}} {{user.lastName}}</option>
           </select>
         </div>
       </div>

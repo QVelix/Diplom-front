@@ -59,15 +59,18 @@ export class UserService {
   }
 
   public addUser(user){
-    this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
-      types.forEach(type=>{
-        if(type.id == user.userTypesId){
-          user.userTypes = {"id":type.id,"name":type.name}
-        }
-      });
-      this.sendlerService.post('/api/User/', user).subscribe(result=>{
-        console.log(result);
-      });
+    // this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
+    //   types.forEach(type=>{
+    //     if(type.id == user.userTypesId){
+    //       user.userTypes = {"id":type.id,"name":type.name}
+    //     }
+    //   });
+    //   this.sendlerService.post('/api/User/', user).subscribe(result=>{
+    //     console.log(result);
+    //   });
+    // });
+    this.sendlerService.put('/api/User/'+user.id, user).subscribe(result=>{
+      console.log(result);
     });
     this._usersSubject.next(user);
   }
@@ -82,17 +85,17 @@ export class UserService {
     this._usersSubject.value[this.findIndex(user.id)] = user;
     console.log(this._usersSubject.value);
     // this._usersSubject.value[this._usersSubject.value.findIndex(u => u.id == user.id)] = user;
-    this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
-      types.forEach(type=>{
-        if(type.id == user.userTypesId){
-          user.userTypes = {"id":type.id,"name":type.name}
-        }
-      });
-      this.sendlerService.put('/api/User/'+user.id, user).subscribe(result=>{
-        console.log(result);
-      });
+    this.sendlerService.put('/api/User/'+user.id, user).subscribe(result=>{
+      console.log(result);
     });
-
+    // this.sendlerService.get('/api/UserType').subscribe((types:Array<{"id":number,"name":string}>)=>{
+    //   types.forEach(type=>{
+    //     if(type.id == user.userTypesId){
+    //       user.userTypes = {"id":type.id,"name":type.name}
+    //     }
+    //   });
+    //
+    // });
   }
 
   public auth(login:string, password:string):boolean{
