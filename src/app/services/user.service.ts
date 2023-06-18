@@ -69,7 +69,7 @@ export class UserService {
     //     console.log(result);
     //   });
     // });
-    this.sendlerService.put('/api/User/'+user.id, user).subscribe(result=>{
+    this.sendlerService.post('/api/User/', user).subscribe(result=>{
       console.log(result);
     });
     this._usersSubject.next(user);
