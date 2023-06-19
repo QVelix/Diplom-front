@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { NgForOf } from "@angular/common";
 import { Router } from "@angular/router";
+import {ContactService} from "../../services/contact.service";
 
 @Component({
   selector: 'app-contacts',
@@ -12,33 +13,13 @@ import { Router } from "@angular/router";
 })
 export class ContactsComponent implements OnInit {
   DataTableHeaders: Array<string> = ["ID", "ФИО", "Рабочий телефон", "Ответственный"];
-  DataTableContent: Array<any> = [
-    {
-      id: 0,
-      First_name: 'Богачёв',
-      Second_name: 'Максим',
-      Last_name: 'Владиславович',
-      Work_phone: '89397052404',
-      Personal_phone: '89023678122',
-      ResponsibleId: 1,
-      Company: 0,
-    },
-    {
-      id: 1,
-      First_name: 'Паньков',
-      Second_name: 'Егор',
-      Last_name: 'Алексеевич',
-      Work_phone: '',
-      Personal_phone: '89324123900',
-      ResponsibleId: 0,
-      Company: 2,
-    }
-  ];
+  DataTableContent: Array<any> = [];
 
-  constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
+  constructor(public userService: UserService, private modalService: NgbModal, private router: Router, private contactService: ContactService) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
+    this.DataTableContent = contactService.getContacts();
   }
 
   ngOnInit(): void {
@@ -47,6 +28,7 @@ export class ContactsComponent implements OnInit {
   delete(contact){
     let contactPosition = this.DataTableContent.findIndex(content=>content.id==contact.id);
     this.DataTableContent.splice(contactPosition, 1);
+    this.contactService.deleteContacts(contact.id);
   }
 
   edit(contact){
@@ -61,15 +43,16 @@ export class ContactsComponent implements OnInit {
     modalRef.result.then(result=>{
       let contactPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
       this.DataTableContent[contactPosition] = result;
+      this.contactService.changeContact(result);
     });
   }
 
   getResponsible(contact){
     let responsibleUser = null;
     this.userService.users$.subscribe(users=>{
-      responsibleUser = users[users.findIndex(user=>user.id==contact.ResponsibleId)];
+      responsibleUser = users[users.findIndex(user=>user.id==contact.userId)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 
@@ -102,12 +85,12 @@ export class ContactsDialogContentComponent {
       this.users = users;
     });
     setTimeout(()=>{
-      this.contactGroup.get('First_name').setValue(this.contact.First_name);
-      this.contactGroup.get('Second_name').setValue(this.contact.Second_name);
-      this.contactGroup.get('Last_name').setValue(this.contact.Last_name);
-      this.contactGroup.get('Work_phone').setValue(this.contact.Work_phone);
-      this.contactGroup.get('Personal_phone').setValue(this.contact.Personal_phone);
-      this.contactGroup.get('Responsible').setValue(this.contact.ResponsibleId);
+      this.contactGroup.get('First_name').setValue(this.contact.firstName);
+      this.contactGroup.get('Second_name').setValue(this.contact.secondName);
+      this.contactGroup.get('Last_name').setValue(this.contact.lastName);
+      this.contactGroup.get('Work_phone').setValue(this.contact.workPhone);
+      this.contactGroup.get('Personal_phone').setValue(this.contact.personalPhone);
+      this.contactGroup.get('Responsible').setValue(this.contact.userId);
     }, 100);
 
   }
@@ -130,7 +113,7 @@ export class ContactsDialogContentComponent {
     this.userService.users$.subscribe(users=>{
       responsibleUser = users[users.findIndex(user=>user.id==id)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 

@@ -75,9 +75,9 @@ export class DealsComponent implements OnInit {
   getResponsible(contact){
     let responsibleUser = null;
     this.userService.users$.subscribe(users=>{
-      responsibleUser = users[users.findIndex(user=>user.id==contact.ResponsibleId)];
+      responsibleUser = users[users.findIndex(user=>user.id==contact.userId)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 
@@ -108,12 +108,12 @@ export class DealsDialogContentComponent {
     setTimeout(()=>{
       console.log(this.users);
       if(this.deal!=undefined){
-        this.dealsGroup.get('Name').setValue(this.deal.Name);
-        this.dealsGroup.get('Number').setValue(this.deal.Number);
-        this.dealsGroup.get('Price').setValue(this.deal.Price);
-        this.dealsGroup.get('Creation_date').setValue(this.deal.Creation_date);
-        this.dealsGroup.get('Close_date').setValue(this.deal.Close_date);
-        this.dealsGroup.get('Responsible').setValue(this.deal.ResponsibleId);
+        this.dealsGroup.get('Name').setValue(this.deal.name);
+        this.dealsGroup.get('Number').setValue(this.deal.number);
+        this.dealsGroup.get('Price').setValue(this.deal.price);
+        this.dealsGroup.get('Creation_date').setValue(this.deal.creationDate);
+        this.dealsGroup.get('Close_date').setValue(this.deal.closeDate);
+        this.dealsGroup.get('Responsible').setValue(this.deal.userId);
       }
     }, 100);
 
@@ -122,12 +122,12 @@ export class DealsDialogContentComponent {
   save(){
     const deal = {
       id: this.deal.id,
-      Name: this.dealsGroup.get('Name').value,
-      Number: this.dealsGroup.get('Number').value,
-      Price: this.dealsGroup.get('Price').value,
-      Creation_date: this.dealsGroup.get('Creation_date').value,
-      Close_date: this.dealsGroup.get('Close_date').value,
-      ResponsibleId: this.dealsGroup.get('Responsible').value,
+      mame: this.dealsGroup.get('Name').value,
+      mumber: this.dealsGroup.get('Number').value,
+      price: this.dealsGroup.get('Price').value,
+      creationDate: this.dealsGroup.get('Creation_date').value,
+      closeDate: this.dealsGroup.get('Close_date').value,
+      userId: this.dealsGroup.get('Responsible').value,
     };
     return deal;
   }
@@ -137,7 +137,7 @@ export class DealsDialogContentComponent {
     this.userService.users$.subscribe(users=>{
       responsibleUser = users[users.findIndex(user=>user.id==id)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 

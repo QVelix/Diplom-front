@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { NgForOf } from "@angular/common";
 import { Router } from "@angular/router";
+import {CompanyService} from "../../services/company.service";
 
 @Component({
   selector: 'app-companies',
@@ -12,31 +13,13 @@ import { Router } from "@angular/router";
 })
 export class CompaniesComponent implements OnInit {
   DataTableHeaders: Array<string> = ["ID", "Название", "Тип", "Телефон", "Почта", "Отвественный"];
-  DataTableContent: Array<any> = [
-    {
-      id: 0,
-      Short_name: 'ООО Рога и Копыта',
-      Full_name: 'Общество с ограниченной ответственностью Соло Груп',
-      Phone: '8939705204',
-      Email: 'roga@kopita.ru',
-      Type: 'ООО',
-      ResponsibleId: 0,
-    },
-    {
-      id: 1,
-      Short_name: 'ИП Соловьев',
-      Full_name: 'Индивидуальный предприниматель Соловьев Алексей Сергеевич',
-      Phone: '8939705204',
-      Email: 'sas@solo-it.ru',
-      Type: 'ИП',
-      ResponsibleId: 1,
-    }
-  ];
+  DataTableContent: Array<any> = [];
 
-  constructor(public userService: UserService, private modalService: NgbModal, private router: Router) {
+  constructor(public userService: UserService, private modalService: NgbModal, private router: Router, private companyService: CompanyService) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
+    this.DataTableContent = this.companyService.getCompanies();
   }
 
   ngOnInit(): void {
@@ -45,6 +28,7 @@ export class CompaniesComponent implements OnInit {
   delete(company){
     let companyPosition = this.DataTableContent.findIndex(content=>content.id==company.id);
     this.DataTableContent.splice(companyPosition, 1);
+    this.companyService.deleteCompany(company.id);
   }
 
   edit(company){
@@ -57,17 +41,18 @@ export class CompaniesComponent implements OnInit {
     }, 100);
 
     modalRef.result.then(result=>{
-      let userPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
-      this.DataTableContent[userPosition] = result;
+      let companyPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
+      this.DataTableContent[companyPosition] = result;
+      this.companyService.changeCompany(result);
     });
   }
 
   getResponsible(company){
     let responsibleUser = null;
     this.userService.users$.subscribe(users=>{
-      responsibleUser = users[users.findIndex(user=>user.id==company.ResponsibleId)];
+      responsibleUser = users[users.findIndex(user=>user.id==company.userId)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 
@@ -100,15 +85,15 @@ export class CompaniesDialogContentComponent {
 
   constructor(public activeModal: NgbActiveModal, private userService: UserService) {
     setTimeout(()=>{
-      this.companiesGroup.get('Short_name').setValue(this.company.Short_name);
-      this.companiesGroup.get('Full_name').setValue(this.company.Full_name);
-      this.companiesGroup.get('Phone').setValue(this.company.Phone);
-      this.companiesGroup.get('Email').setValue(this.company.Email);
+      this.companiesGroup.get('Short_name').setValue(this.company.shortName);
+      this.companiesGroup.get('Full_name').setValue(this.company.fullName);
+      this.companiesGroup.get('Phone').setValue(this.company.phone);
+      this.companiesGroup.get('Email').setValue(this.company.email);
       this.companiesType.forEach(type=>{
         if(this.company.Type==type.Name) this.companiesGroup.get('Type').setValue(type.id);
       })
       // this.companiesGroup.get('Type').setValue(this.company.Type);
-      this.companiesGroup.get('Responsible').setValue(this.company.ResponsibleId);
+      this.companiesGroup.get('Responsible').setValue(this.company.userId);
     }, 100);
     this.userService.users$.subscribe(users=>{
       this.users = users;

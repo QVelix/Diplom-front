@@ -55,9 +55,9 @@ export class SidebarComponent implements OnInit {
     if(this.userService.getAuthStatus()==true){
       if(menuItem.path=="/register"||menuItem.path=="/login"){
         return false;
-      }else if(menuItem.path=='/settings'&&this.userService.getUserType()!=1){
+      }/*else if(menuItem.path=='/settings'&&this.userService.getUserType()!=1){
         return false;
-      }
+      }*/
       else{
         return true;
       }

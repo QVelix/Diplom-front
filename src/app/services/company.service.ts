@@ -11,7 +11,7 @@ export class CompanyService {
   public companies$:Observable<any> = this._companiesSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
-    this.sendlerService.get('/api/CompanyController').subscribe((companies:Array<Company>)=>{
+    this.sendlerService.get('/api/Company').subscribe((companies:Array<Company>)=>{
       companies.forEach(company=>{
         this._companiesSubject.value.next(company);
       });
@@ -20,7 +20,7 @@ export class CompanyService {
 
   getCompanyType(companyTypeID){
     let findedType;
-    this.sendlerService.get('/api/CompanyTypeContoller').subscribe((companyTypes:Array<{ID:number, NAME:string}>)=>{
+    this.sendlerService.get('/api/CompanyType').subscribe((companyTypes:Array<{ID:number, NAME:string}>)=>{
       companyTypes.forEach(type=>{
         if(type.ID==companyTypeID){
           findedType = type;
@@ -28,5 +28,24 @@ export class CompanyService {
       });
     });
     return findedType;
+  }
+
+  public getCompanies(){
+    return this._companiesSubject.value;
+  }
+
+  public deleteCompany(id){
+    this.sendlerService.delete('/api/Company/'+id).subscribe(result=>console.log(result));
+    this._companiesSubject.value.splice(this._companiesSubject.value.findIndex(company=>company.id==id),1);
+  }
+
+  public changeCompany(company){
+    this.sendlerService.put('/api/Company/'+company.id, company).subscribe(result=>{console.log(result)});
+    this._companiesSubject.value[this._companiesSubject.value.findIndex(comp=>comp.id==company.id)] = company;
+  }
+
+  public addCompany(company){
+    this.sendlerService.put('/api/Company/', company).subscribe(result=>console.log(result));
+    this._companiesSubject.next(company);
   }
 }
