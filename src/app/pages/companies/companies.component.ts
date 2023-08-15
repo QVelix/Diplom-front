@@ -19,7 +19,11 @@ export class CompaniesComponent implements OnInit {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
-    this.DataTableContent = this.companyService.getCompanies();
+    this.companyService.companies$.subscribe(comps=>{
+      comps.forEach(comp=>{
+        this.DataTableContent.push(comp);
+      })
+    })
   }
 
   ngOnInit(): void {
@@ -45,6 +49,10 @@ export class CompaniesComponent implements OnInit {
       this.DataTableContent[companyPosition] = result;
       this.companyService.changeCompany(result);
     });
+  }
+
+  addCompany(){
+
   }
 
   getResponsible(company){
@@ -85,6 +93,9 @@ export class CompaniesDialogContentComponent {
 
   constructor(public activeModal: NgbActiveModal, private userService: UserService) {
     setTimeout(()=>{
+      this.userService.users$.subscribe(users=>{
+        users.forEach(u=>this.users.push(u));
+      });
       this.companiesGroup.get('Short_name').setValue(this.company.shortName);
       this.companiesGroup.get('Full_name').setValue(this.company.fullName);
       this.companiesGroup.get('Phone').setValue(this.company.phone);
@@ -103,12 +114,12 @@ export class CompaniesDialogContentComponent {
   save(){
     const company = {
       id: this.company.id,
-      Short_name: this.companiesGroup.get('Short_name').value,
-      Full_name: this.companiesGroup.get('Full_name').value,
-      Phone: this.companiesGroup.get('Phone').value,
-      Email: this.companiesGroup.get('Email').value,
-      Type: this.getTypeName(this.companiesGroup.get('Type').value),
-      ResponsibleId: this.companiesGroup.get('Responsible').value,
+      shortName: this.companiesGroup.get('Short_name').value,
+      fullName: this.companiesGroup.get('Full_name').value,
+      phone: this.companiesGroup.get('Phone').value,
+      email: this.companiesGroup.get('Email').value,
+      type: this.getTypeName(this.companiesGroup.get('Type').value),
+      userId: this.companiesGroup.get('Responsible').value,
     };
     return company;
   }
@@ -128,7 +139,7 @@ export class CompaniesDialogContentComponent {
     this.userService.users$.subscribe(users=>{
       responsibleUser = users[users.findIndex(user=>user.id==id)];
     });
-    const FIO = responsibleUser.firstname+' '+responsibleUser.secondname+' '+responsibleUser.lastname;
+    const FIO = responsibleUser.firstName+' '+responsibleUser.secondName+' '+responsibleUser.lastName;
     return FIO;
   }
 }

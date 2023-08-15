@@ -9,6 +9,9 @@ import {User} from "../models/User";
 export class UserService {
   private _defaultUsers:Array<User> = [{id:null,login:null,password:null,firstName:null,secondName:null,birthDate:null,userTypesId:null}]
 
+  private _isAuthSubject:BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isAuth$: Observable<any> = this._isAuthSubject;
+
   private _userSubject:BehaviorSubject<any> = new BehaviorSubject<User>(this._defaultUsers[0]);
   private _usersSubject:BehaviorSubject<any> = new BehaviorSubject<Array<User>>(this._defaultUsers);
   public user$:Observable<any> = this._userSubject.asObservable();

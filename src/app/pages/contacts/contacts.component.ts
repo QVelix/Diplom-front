@@ -19,7 +19,11 @@ export class ContactsComponent implements OnInit {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
-    this.DataTableContent = contactService.getContacts();
+    this.contactService.contacts$.subscribe(contacts=>{
+      contacts.forEach(cont=>{
+        this.DataTableContent.push(cont);
+      });
+    });
   }
 
   ngOnInit(): void {
@@ -44,6 +48,21 @@ export class ContactsComponent implements OnInit {
       let contactPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
       this.DataTableContent[contactPosition] = result;
       this.contactService.changeContact(result);
+    });
+  }
+
+  addContact(){
+    const modalRef = this.modalService.open(ContactsDialogContentComponent);
+
+    setTimeout(()=>{
+      const element = document.getElementsByClassName('modal-backdrop fade show');
+      element.item(0).remove();
+    }, 100);
+
+    modalRef.result.then(result=>{
+      let contactPosition = this.DataTableContent.findIndex(content=>content.id==result.id);
+      this.DataTableContent[contactPosition] = result;
+      this.contactService.addContact(result);
     });
   }
 
@@ -78,32 +97,38 @@ export class ContactsDialogContentComponent {
     Responsible: new FormControl(''),
   });
 
-  users;
+  users = [];
 
   constructor(public activeModal: NgbActiveModal, private userService: UserService) {
     this.userService.users$.subscribe(users=>{
-      this.users = users;
+      users.forEach(u=>this.users.push(u));
     });
     setTimeout(()=>{
-      this.contactGroup.get('First_name').setValue(this.contact.firstName);
-      this.contactGroup.get('Second_name').setValue(this.contact.secondName);
-      this.contactGroup.get('Last_name').setValue(this.contact.lastName);
-      this.contactGroup.get('Work_phone').setValue(this.contact.workPhone);
-      this.contactGroup.get('Personal_phone').setValue(this.contact.personalPhone);
-      this.contactGroup.get('Responsible').setValue(this.contact.userId);
+      if(this.contact!=undefined){
+        this.contactGroup.get('First_name').setValue(this.contact.firstName);
+        this.contactGroup.get('Second_name').setValue(this.contact.secondName);
+        this.contactGroup.get('Last_name').setValue(this.contact.lastName);
+        this.contactGroup.get('Work_phone').setValue(this.contact.workPhone);
+        this.contactGroup.get('Personal_phone').setValue(this.contact.personalPhone);
+        this.contactGroup.get('Responsible').setValue(this.contact.userId);
+      }
     }, 100);
 
   }
 
   save(){
+    let id = 0;
+    if(this.contact.id!=undefined){
+      id = this.contact.id;
+    }
     const contact = {
-      id: this.contact.id,
-      First_name: this.contactGroup.get('First_name').value,
-      Second_name: this.contactGroup.get('Second_name').value,
-      Last_name: this.contactGroup.get('Last_name').value,
-      Work_phone: this.contactGroup.get('Work_phone').value,
-      Personal_phone: this.contactGroup.get('Personal_phone').value,
-      ResponsibleId: this.contactGroup.get('Responsible').value,
+      id: id,
+      firstName: this.contactGroup.get('First_name').value,
+      secondName: this.contactGroup.get('Second_name').value,
+      lastName: this.contactGroup.get('Last_name').value,
+      workPhone: this.contactGroup.get('Work_phone').value,
+      personalPhone: this.contactGroup.get('Personal_phone').value,
+      userId: this.contactGroup.get('Responsible').value,
     };
     return contact;
   }

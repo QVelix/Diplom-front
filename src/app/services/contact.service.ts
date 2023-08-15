@@ -7,13 +7,13 @@ import {Contact} from "../models/Contact";
   providedIn: 'root'
 })
 export class ContactService {
-  private _contactsSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Contact>>(null);
+  private _contactsSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Contact>>([]);
   public contacts$:Observable<any> = this._contactsSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
     this.sendlerService.get('/api/Contact').subscribe((contacts:Array<Contact>)=>{
       contacts.forEach(contact=>{
-        this._contactsSubject.value.next(contact);
+        this._contactsSubject.value.push(contact);
       });
     });
   }

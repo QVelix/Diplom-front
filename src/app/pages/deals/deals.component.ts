@@ -41,7 +41,7 @@ export class DealsComponent implements OnInit {
   edit(deal){
     const modalRef = this.modalService.open(DealsDialogContentComponent);
     modalRef.componentInstance.deal = deal;
-    modalRef.componentInstance.users = this.users;
+    // modalRef.componentInstance.users = this.users;
 
     setTimeout(()=>{
       const element = document.getElementsByClassName('modal-backdrop fade show');
@@ -58,8 +58,8 @@ export class DealsComponent implements OnInit {
 
   addDeal(){
     const modalRef = this.modalService.open(DealsDialogContentComponent);
-    console.log(this.users);
-    modalRef.componentInstance.user = this.users;
+    // console.log(this.users);
+    // modalRef.componentInstance.user = this.users;
 
     setTimeout(()=>{
       const element = document.getElementsByClassName('modal-backdrop fade show');
@@ -106,7 +106,9 @@ export class DealsDialogContentComponent {
 
   constructor(public activeModal: NgbActiveModal, private userService: UserService) {
     setTimeout(()=>{
-      console.log(this.users);
+      this.userService.users$.subscribe(users=>{
+        users.forEach(u=>this.users.push(u));
+      });
       if(this.deal!=undefined){
         this.dealsGroup.get('Name').setValue(this.deal.name);
         this.dealsGroup.get('Number').setValue(this.deal.number);
@@ -120,8 +122,12 @@ export class DealsDialogContentComponent {
   }
 
   save(){
+    let id = 0;
+    if(this.deal.id!=undefined){
+      id = this.deal.id;
+    }
     const deal = {
-      id: this.deal.id,
+      id: id,
       mame: this.dealsGroup.get('Name').value,
       mumber: this.dealsGroup.get('Number').value,
       price: this.dealsGroup.get('Price').value,

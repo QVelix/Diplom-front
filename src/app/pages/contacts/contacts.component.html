@@ -17,7 +17,7 @@
             <thead class="thead-light">
             <tr>
               <th scope="col" *ngFor="let header of DataTableHeaders">{{header}}</th>
-              <th scope="col"></th>
+              <th scope="col"><a (click)="addContact()" class="btn btn-sm btn-primary">Добавить</a></th>
             </tr>
             </thead>
             <tbody>

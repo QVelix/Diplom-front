@@ -50,7 +50,7 @@ export class SettingsComponent implements OnInit {
   }
 
   addUser(){
-    let user: {userTypesId:6}
+    let user: {userTypesId:2}
     const modalRef = this.modalService.open(SettingsDialogContentComponent);
     modalRef.componentInstance.user = user;
 
@@ -76,6 +76,7 @@ export class SettingsComponent implements OnInit {
 })
 export class SettingsDialogContentComponent {
   @Input() user:any;
+  userTypes=[{id:1, name:'Администратор'}, {id:2, name:'Менеджер'}, {id:3, name:'Программист'}];
   userSettingsGroup: FormGroup = new FormGroup<any>({
     login: new FormControl(''),
     password: new FormControl(''),
@@ -89,20 +90,26 @@ export class SettingsDialogContentComponent {
 
   constructor(public activeModal: NgbActiveModal) {
     setTimeout(()=>{
-      this.userSettingsGroup.get('login').setValue(this.user.login);
-      this.userSettingsGroup.get('password').setValue(this.user.password);
-      this.userSettingsGroup.get('firstname').setValue(this.user.firstName);
-      this.userSettingsGroup.get('secondname').setValue(this.user.secondName);
-      this.userSettingsGroup.get('lastname').setValue(this.user.lastName);
-      this.userSettingsGroup.get('birthdate').setValue(this.user.birthDate);
-      this.userSettingsGroup.get('workPhone').setValue(this.user.workPhone);
-      this.userSettingsGroup.get('personalPhone').setValue(this.user.personalPhone);
+      if(this.user!=undefined){
+        this.userSettingsGroup.get('login').setValue(this.user.login);
+        this.userSettingsGroup.get('password').setValue(this.user.password);
+        this.userSettingsGroup.get('firstname').setValue(this.user.firstName);
+        this.userSettingsGroup.get('secondname').setValue(this.user.secondName);
+        this.userSettingsGroup.get('lastname').setValue(this.user.lastName);
+        this.userSettingsGroup.get('birthdate').setValue(this.user.birthDate);
+        this.userSettingsGroup.get('workPhone').setValue(this.user.workPhone);
+        this.userSettingsGroup.get('personalPhone').setValue(this.user.personalPhone);
+      }
     }, 100);
   }
 
   save(){
+    let id = 0;
+    if(this.user.id!=undefined){
+      id = this.user.id;
+    }
     const user = {
-      id: this.user.id,
+      id: id,
       login: this.userSettingsGroup.get('login').value,
       password: this.userSettingsGroup.get('password').value,
       firstName: this.userSettingsGroup.get('firstname').value,

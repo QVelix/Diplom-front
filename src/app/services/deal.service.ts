@@ -7,15 +7,16 @@ import {Deal} from "../models/Deal";
   providedIn: 'root'
 })
 export class DealService {
-  private _dealsSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Deal>>(null);
+  private _dealsSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Deal>>([]);
   public deals$:Observable<any> = this._dealsSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
     this.sendlerService.get('/api/Deal').subscribe((deals:Array<Deal>)=>{
-      deals.forEach(contact=>{
-        this._dealsSubject.value.next(contact);
+      deals.forEach(deal=>{
+        // console.log(deal);
+        this._dealsSubject.value.push(deal);
+        console.log(this._dealsSubject.value);
       });
-      console.log(deals);
     });
   }
 

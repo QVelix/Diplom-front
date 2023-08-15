@@ -10,6 +10,7 @@ import {
 } from "../../variables/charts";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
+import {DealService} from "../../services/deal.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,24 +19,31 @@ import { Router } from "@angular/router";
 })
 export class DashboardComponent implements OnInit {
 
-  public datasets: any;
+  public datasets: any = [[],[]];
   public data: any;
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private dealService:DealService) {
     if(userService.getAuthStatus()==false){
       router.navigate(['/login']);
     }
+    dealService.deals$.subscribe(deals=>{
+      deals.forEach(deal=>{
+        this.datasets[0].push(deal.creationDate);
+        this.datasets[1].push(deal.price);
+      })
+    })
+    console.log(this.datasets);
   }
 
   ngOnInit() {
 
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
+    // this.datasets = [
+    //   [0, 20, 10, 30, 15, 40, 20, 60, 60],
+    //   [0, 20, 5, 25, 10, 30, 15, 40, 40]
+    // ];
     this.data = this.datasets[0];
 
 

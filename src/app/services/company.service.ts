@@ -7,13 +7,13 @@ import {SendlerService} from "./sendler.service";
   providedIn: 'root'
 })
 export class CompanyService {
-  private _companiesSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Company>>(null);
+  private _companiesSubject:BehaviorSubject<any> = new BehaviorSubject<Array<Company>>([]);
   public companies$:Observable<any> = this._companiesSubject.asObservable();
 
   constructor(private sendlerService: SendlerService) {
     this.sendlerService.get('/api/Company').subscribe((companies:Array<Company>)=>{
       companies.forEach(company=>{
-        this._companiesSubject.value.next(company);
+        this._companiesSubject.value.push(company);
       });
     });
   }

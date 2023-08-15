@@ -9,7 +9,7 @@ import { DealsComponent } from "../../pages/deals/deals.component";
 import { ProductsComponent } from "../../pages/products/products.component";
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard',      component: DashboardComponent },
+    // { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'settings',       component: SettingsComponent },
     { path: 'companies',      component: CompaniesComponent },
